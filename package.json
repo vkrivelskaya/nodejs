@@ -1,0 +1,14 @@
+{
+  "name": "node-app",
+  "version": "0.0.1",
+  "description": "node.js course app",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
