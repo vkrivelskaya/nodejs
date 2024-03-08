@@ -12,13 +12,21 @@ describe('validateInput function', () => {
     });
 
     test('throws error for non-current year', () => {
+        const mockedDate = new Date(2020, 6, 19);
+        const year = mockedDate.getFullYear() + 1;
+
+        let spy = jest.spyOn(global, "Date").mockImplementation(() => mockedDate);
+
         expect(() => {
-            validateInput({ year: 2023 });
-        }).toThrow('Year provided not the current, received: 2023');
+            validateInput({ year });
+        }).toThrow(`Year provided not the current, received: ${year}`);
     });
 
     test('validates current year', () => {
-        const year = new Date().getFullYear();
+        const mockedDate = new Date(2020, 6, 19);
+
+        let spy = jest.spyOn(global, "Date").mockImplementation(() => mockedDate);
+        const year = mockedDate.getFullYear();
         expect(validateInput({ year })).toBe(true);
     });
 
