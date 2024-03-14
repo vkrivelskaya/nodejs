@@ -3,15 +3,24 @@ import { createOrder as createOrderService } from '../services/order.service';
 
 export const createOrder = async (req: Request, res: Response) => {
     try {
-      const success = await createOrderService(req.headers['x-user-id'] as string);
+        const order = await createOrderService(req.headers['x-user-id'] as string);
 
-      if (success) {
-        return res.status(201).json({ message: 'Order created successfully' });
-      } else {
-        return res.status(500).json({ error: 'Failed to create order' });
-      }
+        if (order) {
+            return res.status(201).json({data: {order, error: null}});
+        } else {
+            return res.status(400).json({ data: null,
+                error: {
+                    message: 'Cart is empty'
+                }
+            });
+        }
     } catch (error) {
-      console.error('Error creating order:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+        console.error('Error creating order:', error);
+        return res.status(500).json({
+            data: null,
+            error: {
+                message: 'Internal Server error'
+            }
+        });
     }
   };
