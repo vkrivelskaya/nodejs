@@ -11,3 +11,7 @@ export interface CartEntity {
     isDeleted: boolean;
     items: CartItemEntity[];
 }
+
+export interface CartWithTotal extends CartEntity {
+    total?: number;
+}

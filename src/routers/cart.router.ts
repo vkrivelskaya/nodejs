@@ -1,9 +1,11 @@
 import express from 'express';
+import { deleteCart, getCart, updateCart } from '../controllers/cart.controller';
+import { createOrder } from '../controllers/order.controller';
 import { authenticateUser } from '../middleware/auth.middleware';
 
 export const cartRouter = express.Router();
 
-cartRouter.get('/', authenticateUser, httpGetCart)
-cartRouter.put('/', authenticateUser, httpUpdateCart)
-cartRouter.post('/checkout', authenticateUser, httpCreateOrder)
-cartRouter.delete('/',authenticateUser, httpDeleteCart)
+cartRouter.get('/', authenticateUser, getCart)
+cartRouter.put('/', authenticateUser, updateCart)
+cartRouter.post('/checkout', authenticateUser, createOrder)
+cartRouter.delete('/',authenticateUser, deleteCart)

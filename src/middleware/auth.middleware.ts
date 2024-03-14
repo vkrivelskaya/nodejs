@@ -6,9 +6,9 @@ export const authenticateUser = (req: Request, res: Response, next: NextFunction
 
     if (!userId) {
       return res.status(401).json({
-        'data': null,
-        'error': {
-          'message': 'You must be authorized user'
+        data: null,
+        error: {
+          message: 'You must be authorized user'
         }
       });
     }
@@ -17,9 +17,9 @@ export const authenticateUser = (req: Request, res: Response, next: NextFunction
 
     if (!user) {
       return res.status(403).json({
-        'data': null,
-        'error': {
-          'message': 'User is not authorized'
+        data: null,
+        error: {
+          message: 'User is not authorized'
         }
       });
     }
