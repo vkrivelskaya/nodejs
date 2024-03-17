@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { OrderEntity } from '../models/order';
 
-const ORDERS_DB_FILE = path.resolve(__dirname, 'order.db.json');
+const ORDERS_DB_FILE = path.resolve(__dirname, '../db', 'order.db.json');
 
 export const createOrder = async (order: OrderEntity): Promise<boolean> => {
   try {

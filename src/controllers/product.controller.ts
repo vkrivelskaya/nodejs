@@ -13,7 +13,7 @@ export const getAllProductsController = async (req: Request, res: Response): Pro
 
   export const getProductByIdController = async (req: Request, res: Response): Promise<void> => {
     try {
-      const productId = req.params.productId;
+      const productId = req.params.id;
       const product = await getProductById(productId);
       if (!product) {
         res.status(404).json({

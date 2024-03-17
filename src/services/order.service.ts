@@ -4,19 +4,6 @@ import { deleteCart } from '../repositories/cart.repository';
 import { CartWithTotal } from '../models/cart';
 import { getCart } from './cart.service';
 
-// export const createOrder = async (order: OrderEntity): Promise<boolean> => {
-//     try {
-//       const success = await createOrderInRepository(order);
-//       if (success) {
-//         await deleteCart(order.userId);
-//       }
-//       return success;
-//     } catch (error) {
-//       console.error('Error creating order:', error);
-//       return false;
-//     }
-// };
-
 export const createOrder = async (userId: string): Promise<OrderEntity | null> => {
     try {
         const cart: CartWithTotal | null = await getCart(userId);

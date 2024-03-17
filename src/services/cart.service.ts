@@ -5,6 +5,9 @@ import { getProductById } from '../repositories/product.repository';
 export const getCart = async (userId: string): Promise<CartWithTotal | null> => {
     try {
         const cart: CartWithTotal | null = await getCartById(userId);
+        if (cart) {
+            cart.total = cart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
+        }
         return cart;
     } catch (error) {
         console.error('Error fetching cart:', error);
@@ -46,7 +49,7 @@ export const updateCart = async (userId: string, productId: string, count: numbe
             currentCart.items.push(newCartItem);
         }
 
-        currentCart.total = currentCart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);;
+        currentCart.total = currentCart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
 
         const success = await update(userId, currentCart);
 

@@ -6,8 +6,8 @@ const PORT = 8000;
 const app = express();
 
 app.use(express.json());
-app.use('/profile-cart', cartRouter);
-app.use('/products', productRouter);
+app.use('/api/profile/cart', cartRouter);
+app.use('/api/products', productRouter);
 app.listen(PORT,() => {
     console.log(`Listening on port ${PORT}...`)
 })
