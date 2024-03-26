@@ -1,15 +1,24 @@
-import fs from 'fs';
-import path from 'path';
 import { CartWithTotal } from '../models/cart';
-
-const CART_DB_FILE = path.resolve(__dirname, '../db',  'cart.db.json');
+import Cart from '../models/cart';
+import { Types } from 'mongoose';
 
 export const getCart = async (userId: string): Promise<CartWithTotal | null> => {
     try {
-        const data = await fs.promises.readFile(CART_DB_FILE, 'utf8');
-        const carts: CartWithTotal[] = JSON.parse(data);
-        const userCart = carts.find(cart => cart.userId === userId);
-        return userCart || null;
+        const userCart = await Cart.findOne({ userId },  {_id:0, id: 1, userId: 1, items: 1, total: 1, });
+        return userCart
+        ? {
+            id: userCart.id,
+            userId: userCart.userId,
+            isDeleted: userCart.isDeleted,
+            items: userCart.items.map(item => ({product: {
+                id: item.product.id,
+                title: item.product.title,
+                description: item.product.description,
+                price: item.product.price,
+            }, count: item.count})),
+            total: userCart.total
+        }
+        : null;
     } catch (error) {
         console.error('Error fetching cart data:', error);
         return null;
@@ -18,17 +27,7 @@ export const getCart = async (userId: string): Promise<CartWithTotal | null> => 
 
 export const updateCart = async (userId: string, updatedCart: CartWithTotal): Promise<boolean> => {
     try {
-        const data = await fs.promises.readFile(CART_DB_FILE, 'utf8');
-        const carts: CartWithTotal[] = JSON.parse(data);
-        const index = carts.findIndex(cart => cart.userId === userId);
-
-        if (index !== -1) {
-        carts[index] = updatedCart;
-        } else {
-        carts.push(updatedCart);
-        }
-
-        await fs.promises.writeFile(CART_DB_FILE, JSON.stringify(carts, null, 2));
+        await Cart.updateOne({ userId }, {...updatedCart}, { upsert: true });
         return true;
     } catch (error) {
         console.error('Error updating cart:', error);
@@ -38,16 +37,7 @@ export const updateCart = async (userId: string, updatedCart: CartWithTotal): Pr
 
 export const deleteCart = async (userId: string): Promise<boolean> => {
     try {
-        const data = await fs.promises.readFile(CART_DB_FILE, 'utf8');
-        const carts: CartWithTotal[] = JSON.parse(data);
-        const updatedCarts = carts.map((cart: any) => {
-            if (cart.userId === userId) {
-                cart.items = [];
-            }
-            return cart;
-        });
-        await fs.promises.writeFile(CART_DB_FILE, JSON.stringify(updatedCarts, null, 2));
-
+        await Cart.updateOne({ userId }, { items: [] });
         return true;
     } catch (error) {
         console.error('Error deleting cart:', error);
@@ -57,8 +47,9 @@ export const deleteCart = async (userId: string): Promise<boolean> => {
 
 export const createCart = async (newCart: CartWithTotal): Promise<boolean> => {
     try {
-        await fs.promises.appendFile(CART_DB_FILE, JSON.stringify(newCart, null, 2) + '\n');
-
+        const userId = newCart.userId;
+        const cart = new Cart({ ...newCart, userId });
+        await cart.save();
         return true;
     } catch (error) {
         console.error('Error creating cart:', error);

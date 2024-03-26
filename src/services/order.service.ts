@@ -24,7 +24,7 @@ export const createOrder = async (userId: string): Promise<OrderEntity | null> =
             comments: '',
             status: 'created',
             total: total
-        };
+        } as OrderEntity;
 
 
         const success = await createOrderInRepository(order);

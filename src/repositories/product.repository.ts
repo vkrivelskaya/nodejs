@@ -1,26 +1,22 @@
-import fs from 'fs';
-import path from 'path';
-import { ProductEntity } from '../models/product';
-
-const PRODUCTS_DB_FILE = path.resolve(__dirname, '../db', 'products.db.json');
+import { ProductEntity } from "../models/product";
+import Product from "../models/product";
 
 export const getAllProducts = async (): Promise<ProductEntity[]> => {
-  try {
-    const data = await fs.promises.readFile(PRODUCTS_DB_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading products data:', error);
-    return [];
-  }
+    try {
+        const products = await Product.find({}, {_id:0, id: 1, title: 1, description: 1, price: 1 });
+        return products;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        throw new Error('Failed to fetch products');
+    }
 };
 
-export const getProductById = async (productId: string): Promise<ProductEntity | undefined> => {
-  try {
-    const data = await fs.promises.readFile(PRODUCTS_DB_FILE, 'utf8');
-    const products: ProductEntity[] = JSON.parse(data);
-    return products.find(product => product.id.toLowerCase() === productId.toLowerCase());
-  } catch (error) {
-    console.error('Error reading products data:', error);
-    return undefined;
-  }
+export const getProductById = async (productId: string): Promise<ProductEntity | null> => {
+    try {
+        const product = await Product.findOne({ id:  productId}, { _id: 0, id: 1, title: 1, description: 1, price: 1 });
+        return product;
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        throw new Error('Failed to fetch product');
+    }
 };

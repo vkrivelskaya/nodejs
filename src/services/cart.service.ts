@@ -33,25 +33,30 @@ export const updateCart = async (userId: string, productId: string, count: numbe
             return null;
         }
 
-        const existingItemIndex = currentCart.items.findIndex((item: CartItemEntity) => item.product.id === productId);
+        if (count === 0) {
+            currentCart.items = currentCart.items.filter(item => item.product.id !== productId)
 
-        if (existingItemIndex !== -1) {
-            currentCart.items[existingItemIndex].count = count;
         } else {
-            const product = await getProductById(productId);
-            if(!product) {
-                return null;
+            const existingItemIndex = currentCart.items.findIndex((item: CartItemEntity) => item.product.id === productId);
+
+            if (existingItemIndex !== -1) {
+                currentCart.items[existingItemIndex].count = count;
+            } else {
+                const product = await getProductById(productId);
+                if(!product) {
+                    return null;
+                }
+                const newCartItem: CartItemEntity = {
+                    product: product,
+                    count: count
+                } as CartItemEntity;
+                currentCart.items.push(newCartItem);
             }
-            const newCartItem: CartItemEntity = {
-                product,
-                count: count
-            };
-            currentCart.items.push(newCartItem);
         }
 
         currentCart.total = currentCart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
 
-        const success = await update(userId, currentCart);
+        await update(userId, currentCart);
 
         return currentCart;
     } catch (error) {
@@ -65,10 +70,10 @@ export const createCart = async (userId: string): Promise<CartWithTotal | null> 
         const newCart: CartWithTotal = {
             id: crypto.randomUUID(),
             userId: userId,
-            items: [],
+            items: [] as CartItemEntity[],
             isDeleted: false,
             total: 0
-        };
+        } as CartWithTotal;
 
         await create(newCart);
         return newCart;

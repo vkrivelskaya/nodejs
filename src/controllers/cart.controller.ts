@@ -58,7 +58,7 @@ export const deleteCart = async (req: Request, res: Response) => {
 
 const updateCartSchema = Joi.object({
     productId: Joi.string().required(),
-    count: Joi.number().integer().min(1).required()
+    count: Joi.number().integer().required()
   });
 
 export const updateCart = async (req: Request, res: Response) => {

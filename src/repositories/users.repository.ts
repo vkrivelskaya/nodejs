@@ -1,15 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import { UserEntity } from '../models/user';
-
-const USERS_DB_FILE = path.resolve(__dirname, '../db', 'users.db.json');
+import User, { UserEntity } from '../models/user';
 
 export const getUsers = async (): Promise<UserEntity[]> => {
   try {
-    const data = await fs.promises.readFile(USERS_DB_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading users data:', error);
-    return [];
+    const users = await User.find();
+    return users
+  } catch (err) {
+    console.error("Error finding users: ", err);
+    throw new Error('Failed to fetch users');
   }
 };
