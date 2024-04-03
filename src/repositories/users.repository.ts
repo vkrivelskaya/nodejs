@@ -1,15 +1,14 @@
-import fs from 'fs';
-import path from 'path';
-import { UserEntity } from '../models/user';
+import { EntityManager } from '@mikro-orm/core';
+import { initializeMikroORM } from '../micro-orm';
+import { User } from '../models/user.entity';
 
-const USERS_DB_FILE = path.resolve(__dirname, '../db', 'users.db.json');
-
-export const getUsers = async (): Promise<UserEntity[]> => {
+export const getUsers = async (): Promise<User[]> => {
   try {
-    const data = await fs.promises.readFile(USERS_DB_FILE, 'utf8');
-    return JSON.parse(data);
+    const mikroOrm = await initializeMikroORM();
+    const em = mikroOrm.em;
+    return em.find(User, {});
   } catch (error) {
-    console.error('Error reading users data:', error);
-    return [];
+    console.error('Error fetching users:', error);
+    throw new Error('Failed to fetch users');
   }
 };

@@ -1,12 +1,13 @@
-import { CartItemEntity, CartWithTotal } from "../models/cart";
+import { Cart, CartItem } from "../models/cart.entity";
 import {getCart as getCartById, deleteCart as deleteCartById, updateCart as update, createCart as create} from "../repositories/cart.repository"
 import { getProductById } from '../repositories/product.repository';
 
-export const getCart = async (userId: string): Promise<CartWithTotal | null> => {
+
+export const getCart = async (userId: string): Promise<Cart | null> => {
     try {
-        const cart: CartWithTotal | null = await getCartById(userId);
+        const cart: Cart | null = await getCartById(userId);
         if (cart) {
-            cart.total = cart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
+            //cart.total = cart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
         }
         return cart;
     } catch (error) {
@@ -14,6 +15,7 @@ export const getCart = async (userId: string): Promise<CartWithTotal | null> => 
         return null;
     }
 };
+
 
 export const deleteCart = async (userId: string): Promise<boolean> => {
     try {
@@ -25,56 +27,61 @@ export const deleteCart = async (userId: string): Promise<boolean> => {
     }
 };
 
-export const updateCart = async (userId: string, productId: string, count: number): Promise<CartWithTotal | null> => {
-    try {
-        const currentCart: CartWithTotal | null = await getCartById(userId);
 
-        if (!currentCart) {
-            return null;
-        }
+export const updateCart = async (userId: string, productId: string, count: number): Promise<Cart | null> => {
+  try {
+    let currentCart: Cart | null = await getCartById(userId);
 
-        const existingItemIndex = currentCart.items.findIndex((item: CartItemEntity) => item.product.id === productId);
-
-        if (existingItemIndex !== -1) {
-            currentCart.items[existingItemIndex].count = count;
-        } else {
-            const product = await getProductById(productId);
-            if(!product) {
-                return null;
-            }
-            const newCartItem: CartItemEntity = {
-                product,
-                count: count
-            };
-            currentCart.items.push(newCartItem);
-        }
-
-        currentCart.total = currentCart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
-
-        const success = await update(userId, currentCart);
-
-        return currentCart;
-    } catch (error) {
-        console.error('Error updating cart:', error);
-        return null;
+    if (!currentCart) {
+      return null;
     }
+
+    let cartItem = currentCart.items.find(item => item.product.id === productId);
+
+    if (cartItem) {
+      cartItem.count += count;
+    } else {
+      const product = await getProductById(productId);
+      if (!product) {
+        return null;
+      }
+
+      cartItem = {
+        product: product,
+        count: count,
+        cart: currentCart,
+        id: crypto.randomUUID(),
+      };
+
+      currentCart.items.push(cartItem);
+    }
+
+    currentCart.total = currentCart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
+
+    await update(currentCart);
+
+    return currentCart;
+  } catch (error) {
+    console.error('Error updating cart:', error);
+    return null;
+  }
 };
 
-export const createCart = async (userId: string): Promise<CartWithTotal | null> => {
-    try {
-        const newCart: CartWithTotal = {
-            id: crypto.randomUUID(),
-            userId: userId,
-            items: [],
-            isDeleted: false,
-            total: 0
-        };
 
-        await create(newCart);
-        return newCart;
+export const createCart = async (userId: string): Promise<Cart | null> => {
+    try {
+      const newCart = new Cart();
+      newCart.id = crypto.randomUUID();
+      newCart.userId = userId;
+      newCart.items = [];
+      newCart.isDeleted = false;
+      newCart.total = 0;
+      await create(newCart);
+
+      return newCart;
     } catch (error) {
-        console.error('Error creating cart:', error);
-        return null;
+      console.error('Error creating cart:', error);
+      return null;
     }
-};
+  };
 

@@ -1,18 +1,16 @@
-import fs from 'fs';
-import path from 'path';
-import { OrderEntity } from '../models/order';
+import { initializeMikroORM } from "../micro-orm";
+import { Order } from "../models/order.entity";
+import { User } from "../models/user.entity";
 
-const ORDERS_DB_FILE = path.resolve(__dirname, '../db', 'order.db.json');
-
-export const createOrder = async (order: OrderEntity): Promise<boolean> => {
-  try {
-    const data = await fs.promises.readFile(ORDERS_DB_FILE, 'utf8');
-    const orders: OrderEntity[] = JSON.parse(data);
-    orders.push(order);
-    await fs.promises.writeFile(ORDERS_DB_FILE, JSON.stringify(orders, null, 2));
-    return true;
-  } catch (error) {
-    console.error('Error creating order:', error);
-    return false;
-  }
+export const createOrder = async (order: Order, userId: string): Promise<boolean> => {
+    try {
+        const mikroOrm = await initializeMikroORM();
+        const em = mikroOrm.em;
+        order.user = await em.getReference(User, userId);
+        await em.persistAndFlush(order);
+        return true;
+    } catch (error) {
+        console.error('Error creating order:', error);
+        return false;
+    }
 };

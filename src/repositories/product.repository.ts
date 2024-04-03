@@ -1,26 +1,25 @@
-import fs from 'fs';
-import path from 'path';
-import { ProductEntity } from '../models/product';
+import { EntityManager } from '@mikro-orm/core';
+import { initializeMikroORM } from '../micro-orm';
+import { Product } from '../models/product.entity';
 
-const PRODUCTS_DB_FILE = path.resolve(__dirname, '../db', 'products.db.json');
-
-export const getAllProducts = async (): Promise<ProductEntity[]> => {
+export const getAllProducts = async (): Promise<Product[]> => {
   try {
-    const data = await fs.promises.readFile(PRODUCTS_DB_FILE, 'utf8');
-    return JSON.parse(data);
+    const mikroOrm = await initializeMikroORM();
+    const em = mikroOrm.em;
+    return await em.find(Product, {});
   } catch (error) {
-    console.error('Error reading products data:', error);
-    return [];
+    console.error('Error fetching products:', error);
+    throw new Error('Failed to fetch products');
   }
 };
 
-export const getProductById = async (productId: string): Promise<ProductEntity | undefined> => {
+export const getProductById = async (productId: string): Promise<Product | null> => {
   try {
-    const data = await fs.promises.readFile(PRODUCTS_DB_FILE, 'utf8');
-    const products: ProductEntity[] = JSON.parse(data);
-    return products.find(product => product.id.toLowerCase() === productId.toLowerCase());
+    const mikroOrm = await initializeMikroORM();
+    const em = mikroOrm.em;
+    return await em.findOne(Product, { id: productId });
   } catch (error) {
-    console.error('Error reading products data:', error);
-    return undefined;
+    console.error('Error fetching product:', error);
+    throw new Error('Failed to fetch product');
   }
 };
