@@ -1,13 +1,14 @@
 import { Cart, CartItem } from "../models/cart.entity";
 import {getCart as getCartById, deleteCart as deleteCartById, updateCart as update, createCart as create} from "../repositories/cart.repository"
 import { getProductById } from '../repositories/product.repository';
+import { getUser } from "./users.service";
 
 
 export const getCart = async (userId: string): Promise<Cart | null> => {
     try {
         const cart: Cart | null = await getCartById(userId);
         if (cart) {
-            //cart.total = cart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
+            cart.total = cart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
         }
         return cart;
     } catch (error) {
@@ -18,25 +19,34 @@ export const getCart = async (userId: string): Promise<Cart | null> => {
 
 
 export const deleteCart = async (userId: string): Promise<boolean> => {
-    try {
-        const success = await deleteCartById(userId);
-        return success;
-    } catch (error) {
-        console.error('Error deleting cart:', error);
-        return false;
-    }
+  try {
+      const cart = await getCart(userId);
+      if (!cart) {
+          console.error('Cart not found');
+          return false;
+      }
+
+      cart.items.removeAll();
+
+      await update(cart);
+
+      return true;
+  } catch (error) {
+      console.error('Error clearing cart:', error);
+      return false;
+  }
 };
 
 
 export const updateCart = async (userId: string, productId: string, count: number): Promise<Cart | null> => {
   try {
-    let currentCart: Cart | null = await getCartById(userId);
+    let currentCart: Cart | null = await getCart(userId);
 
     if (!currentCart) {
       return null;
     }
 
-    let cartItem = currentCart.items.find(item => item.product.id === productId);
+    let cartItem = currentCart.items.getItems().find(item => item.product.uuid === productId);
 
     if (cartItem) {
       cartItem.count += count;
@@ -49,14 +59,14 @@ export const updateCart = async (userId: string, productId: string, count: numbe
       cartItem = {
         product: product,
         count: count,
+        uuid: crypto.randomUUID(),
         cart: currentCart,
-        id: crypto.randomUUID(),
       };
 
-      currentCart.items.push(cartItem);
+      currentCart.items.add(cartItem);
     }
 
-    currentCart.total = currentCart.items.reduce((acc, item) => acc + (item.product.price * item.count), 0);
+    currentCart.total = currentCart.items.getItems().reduce((acc, item) => acc + (item.product.price * item.count), 0);
 
     await update(currentCart);
 
@@ -69,19 +79,19 @@ export const updateCart = async (userId: string, productId: string, count: numbe
 
 
 export const createCart = async (userId: string): Promise<Cart | null> => {
-    try {
-      const newCart = new Cart();
-      newCart.id = crypto.randomUUID();
-      newCart.userId = userId;
-      newCart.items = [];
-      newCart.isDeleted = false;
-      newCart.total = 0;
-      await create(newCart);
+  try {
+      const user = await getUser(userId);
+      if (!user) {
+          console.error('User not found');
+          return null;
+      }
 
+      const newCart = new Cart(user, 0);
+      await create(newCart);
       return newCart;
-    } catch (error) {
+  } catch (error) {
       console.error('Error creating cart:', error);
       return null;
-    }
-  };
+  }
+};
 

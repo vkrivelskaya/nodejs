@@ -3,19 +3,9 @@ import { Cart } from './cart.entity';
 
 @Entity()
 export class User {
-  @PrimaryKey()
-  id!: string;
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  uuid!: string;
 
-  @OneToMany(() => Cart, cart => cart.userId)
+  @OneToMany(() => Cart, cart => cart.user)
   carts = new Collection<Cart>(this);
 }
-
-
-// export interface UserEntity {
-//     id: string; // uuid
-//   }
-
-//   const user: UserEntity = {
-//     id: '0fe36d16-49bc-4aab-a227-f84df899a6cb'
-//   }
-

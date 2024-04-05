@@ -1,7 +1,7 @@
 import { MikroORM } from '@mikro-orm/core';
-import config from './mikro-orm.config'; // Import the configuration for MikroORM
+import config from './mikro-orm.config';
 
 export async function initializeMikroORM() {
-  const mikroOrm = await MikroORM.init(config); // Initialize MikroORM with the configuration
+  const mikroOrm = await MikroORM.init(config); 
   return mikroOrm;
 }

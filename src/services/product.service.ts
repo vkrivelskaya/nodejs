@@ -1,4 +1,3 @@
-import { EntityManager } from '@mikro-orm/core';
 import { Product } from "../models/product.entity";
 import { getAllProducts as fetchAllProducts, getProductById as fetchProductById } from '../repositories/product.repository';
 

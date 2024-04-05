@@ -6,8 +6,8 @@ type ORDER_STATUS = 'created' | 'completed';
 
 @Entity()
 export class Order {
-  @PrimaryKey()
-  id!: string;
+  @PrimaryKey({type: 'uuid', defaultRaw: 'uuid_generate_v4()'})
+  uuid!: string;
 
   @ManyToOne(() => User)
   user!: User;
@@ -41,4 +41,24 @@ export class Order {
 
   @Property()
   total!: number;
+
+  constructor(
+    paymentType: string,
+    paymentAddress: any,
+    creditCard: any,
+    deliveryType: string,
+    deliveryAddress: string,
+    comments: string,
+    status: ORDER_STATUS,
+    total: number
+  ) {
+    this.paymentType = paymentType;
+    this.paymentAddress = paymentAddress;
+    this.creditCard = creditCard;
+    this.deliveryType = deliveryType;
+    this.deliveryAddress = deliveryAddress;
+    this.comments = comments;
+    this.status = status;
+    this.total = total
+  }
 }
