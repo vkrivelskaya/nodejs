@@ -1,4 +1,5 @@
-import { Entity, PrimaryKey, Property, OneToMany } from "@mikro-orm/core";
+import { Entity, PrimaryKey, Property, OneToMany, Collection } from "@mikro-orm/core";
+import { CartItem } from "./cart-item.entity";
 
 @Entity()
 export class Product {
@@ -13,6 +14,9 @@ export class Product {
 
   @Property()
   price!: number;
+
+  @OneToMany(() => CartItem, item => item.product)
+  items = new Collection<CartItem>(this);
 
   constructor(title: string, description: string, price: number) {
     this.title = title;

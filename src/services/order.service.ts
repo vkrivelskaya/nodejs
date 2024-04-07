@@ -1,9 +1,10 @@
 import { createOrder as createOrderInRepository } from '../repositories/order.repository';
 import { deleteCart } from '../repositories/cart.repository';
 import { getCart } from './cart.service';
-import { Cart, CartItem } from '../models/cart.entity';
+import { Cart} from '../models/cart.entity';
 import { Order } from '../models/order.entity';
 import { Collection } from '@mikro-orm/core';
+import { CartItem } from '../models/cart-item.entity';
 
 export const createOrder = async (userId: string): Promise<Order | null> => {
   try {

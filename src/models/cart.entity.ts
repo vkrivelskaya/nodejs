@@ -1,27 +1,27 @@
 import { Entity, PrimaryKey, Property, Collection, OneToMany, ManyToOne, OneToOne} from '@mikro-orm/core';
-import { Product } from './product.entity';
+import { CartItem } from './cart-item.entity';
+import { Order } from './order.entity';
 import { User } from './user.entity';
 
-@Entity()
-export class CartItem {
-  @PrimaryKey({type: 'uuid', defaultRaw: 'uuid_generate_v4()'})
-  uuid!: string;
+// @Entity()
+// export class Cart {
+//   @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+//   uuid!: string;
 
-  @ManyToOne(() => Cart)
-  cart!: Cart;
+//   @OneToOne(() => User)
+//   user!: User;
 
-  @ManyToOne(() => Product)
-  product!: Product;
+//   @Property()
+//   total!: number;
 
-  @Property()
-  count!: number;
+//   @OneToMany(() => CartItem, item => item.cart, { eager: true })
+//   items = new Collection<CartItem>(this)
 
-  constructor(
-    count: number
-  ) {
-    this.count = count;
-  }
-}
+//   constructor(user: User, total: number) {
+//     this.user = user;
+//     this.total = total;
+//   }
+// }
 
 @Entity()
 export class Cart {
@@ -31,11 +31,14 @@ export class Cart {
   @OneToOne(() => User)
   user!: User;
 
+  @OneToMany(() => CartItem, item => item.cart)
+  items = new Collection<CartItem>(this);
+
+  @OneToMany(() => Order, order => order.cart)
+  orders = new Collection<Order>(this);
+
   @Property()
   total!: number;
-
-  @OneToMany(() => CartItem, item => item.cart, { eager: true })
-  items = new Collection<CartItem>(this)
 
   constructor(user: User, total: number) {
     this.user = user;

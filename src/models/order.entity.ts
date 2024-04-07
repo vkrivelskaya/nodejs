@@ -1,13 +1,14 @@
 import { Entity, PrimaryKey, Property, ManyToOne, OneToMany, Collection } from '@mikro-orm/core';
-import { Cart, CartItem } from "./cart.entity";
-import { User } from "./user.entity";
+import { CartItem } from './cart-item.entity';
+import { Cart } from './cart.entity';
+import { User } from './user.entity';
 
 type ORDER_STATUS = 'created' | 'completed';
 
 @Entity()
 export class Order {
-  @PrimaryKey({type: 'uuid', defaultRaw: 'uuid_generate_v4()'})
-  uuid!: string;
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  id!: string;
 
   @ManyToOne(() => User)
   user!: User;
@@ -15,7 +16,7 @@ export class Order {
   @ManyToOne(() => Cart)
   cart!: Cart;
 
-  @OneToMany(() => CartItem, item => item.product)
+  @OneToMany(() => CartItem, item => item.order)
   items = new Collection<CartItem>(this);
 
   @Property()
@@ -59,6 +60,6 @@ export class Order {
     this.deliveryAddress = deliveryAddress;
     this.comments = comments;
     this.status = status;
-    this.total = total
+    this.total = total;
   }
 }

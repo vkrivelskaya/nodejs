@@ -1,4 +1,5 @@
-import { Cart, CartItem } from "../models/cart.entity";
+import { CartItem } from "../models/cart-item.entity";
+import { Cart} from "../models/cart.entity";
 import {getCart as getCartById, deleteCart as deleteCartById, updateCart as update, createCart as create} from "../repositories/cart.repository"
 import { getProductById } from '../repositories/product.repository';
 import { getUser } from "./users.service";
@@ -56,14 +57,14 @@ export const updateCart = async (userId: string, productId: string, count: numbe
         return null;
       }
 
-      cartItem = {
+      const newCartItem: CartItem = {
         product: product,
         count: count,
         uuid: crypto.randomUUID(),
         cart: currentCart,
       };
 
-      currentCart.items.add(cartItem);
+      currentCart.items.add(newCartItem);
     }
 
     currentCart.total = currentCart.items.getItems().reduce((acc, item) => acc + (item.product.price * item.count), 0);
@@ -76,22 +77,3 @@ export const updateCart = async (userId: string, productId: string, count: numbe
     return null;
   }
 };
-
-
-export const createCart = async (userId: string): Promise<Cart | null> => {
-  try {
-      const user = await getUser(userId);
-      if (!user) {
-          console.error('User not found');
-          return null;
-      }
-
-      const newCart = new Cart(user, 0);
-      await create(newCart);
-      return newCart;
-  } catch (error) {
-      console.error('Error creating cart:', error);
-      return null;
-  }
-};
-
