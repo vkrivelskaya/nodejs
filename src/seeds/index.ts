@@ -1,22 +1,14 @@
-import { MikroORM } from '@mikro-orm/core';
-import config from '../mikro-orm.config';
+import { EntityManager } from '@mikro-orm/core';
+import { initializeMikroORM } from '../micro-orm';
 import { seedProducts } from '../seeders/product.seeder';
 import { seedUsers } from '../seeders/user.seeder';
 
-async function seedDatabase() {
-  const orm = await MikroORM.init(config);
-  const em = orm.em;
+(async () => {
+  const orm = await initializeMikroORM();
+  const em = orm.em.fork();
 
-  try {
-    await seedUsers(em);
-    await seedProducts(em);
+  await seedUsers(em);
+  await seedProducts(em);
 
-    console.log('Seeding completed successfully');
-  } catch (error) {
-    console.error('Error seeding database:', error);
-  } finally {
-    await orm.close();
-  }
-}
-
-seedDatabase();
+  await orm.close(true);
+})();

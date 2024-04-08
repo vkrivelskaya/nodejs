@@ -13,7 +13,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "uuid_generate_v4()",
           "mappedType": "uuid"
         },
         "title": {
@@ -71,7 +70,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "uuid_generate_v4()",
           "mappedType": "uuid"
         }
       },
@@ -102,7 +100,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "uuid_generate_v4()",
           "mappedType": "uuid"
         },
         "user_uuid": {
@@ -174,7 +171,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "uuid_generate_v4()",
           "mappedType": "uuid"
         },
         "user_uuid": {
@@ -320,7 +316,6 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "uuid_generate_v4()",
           "mappedType": "uuid"
         },
         "cart_uuid": {

@@ -3,7 +3,7 @@ import { CartItem } from "./cart-item.entity";
 
 @Entity()
 export class Product {
-  @PrimaryKey({type: 'uuid', defaultRaw: 'uuid_generate_v4()'})
+  @PrimaryKey({type: 'uuid'})
   uuid!: string;
 
   @Property()

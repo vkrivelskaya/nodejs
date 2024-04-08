@@ -25,7 +25,7 @@ import { User } from './user.entity';
 
 @Entity()
 export class Cart {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  @PrimaryKey({ type: 'uuid'})
   uuid!: string;
 
   @OneToOne(() => User)

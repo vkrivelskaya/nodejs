@@ -7,7 +7,7 @@ type ORDER_STATUS = 'created' | 'completed';
 
 @Entity()
 export class Order {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  @PrimaryKey({ type: 'uuid'})
   id!: string;
 
   @ManyToOne(() => User)

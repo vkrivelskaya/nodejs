@@ -5,7 +5,7 @@ import { Product } from "./product.entity";
 
 @Entity()
 export class CartItem {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  @PrimaryKey({ type: 'uuid'})
   uuid!: string;
 
   @ManyToOne(() => Cart)
