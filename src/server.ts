@@ -15,33 +15,6 @@ import { productRouter } from './routers/product.router';
 
 const PORT = 8000;
 const app = express();
-// interface CustomRequest extends Request {
-//   em: EntityManager;
-// }
-
-// const startServer = async () => {
-//   try {
-//     const mikroOrm = await initializeMikroORM();
-//     const em = mikroOrm.em;
-
-//     app.use(express.json());
-//     app.use((req: any, res, next) => {
-//       req.em = em;
-//       next();
-//     });
-//     app.use('/api/profile/cart', cartRouter);
-//     app.use('/api/products', productRouter);
-
-//     app.listen(PORT, () => {
-//       console.log(`Server is running on port ${PORT}`);
-//     });
-//   } catch (err) {
-//     console.error('Error starting server:', err);
-//     process.exit(1);
-//   }
-// };
-
-// startServer();
 
 export const DI = {} as {
   server: http.Server;
@@ -56,6 +29,8 @@ export const DI = {} as {
 export const init = (async () => {
   DI.orm = await MikroORM.init<PostgreSqlDriver>(config);
 
+  await DI.orm.migrator.up();
+
   DI.em = DI.orm.em;
   DI.userRepository = DI.orm.em.getRepository(User);
   DI.productRepository = DI.orm.em.getRepository(Product);
@@ -64,12 +39,12 @@ export const init = (async () => {
 
   app.use(express.json());
   app.use((req, res, next) => RequestContext.create(DI.orm.em, next));
-  app.get('/', (req, res) => res.json({ message: 'Welcome to MikroORM express TS example, try CRUD on /author and /book endpoints!' }));
+  app.get('/', (req, res) => res.json({ message: 'Welcome to MikroORM express TS example, try CRUD on /products and /profile/cart endpoints!' }));
   app.use('/api/profile/cart', cartRouter);
   app.use('/api/products', productRouter);
   app.use((req, res) => res.status(404).json({ message: 'No route found' }));
 
   DI.server = app.listen(PORT, () => {
-    console.log(`MikroORM express TS example started at http://localhost:${PORT}`);
+    console.log(`MikroORM express TS started at http://localhost:${PORT}`);
   });
 })();
