@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from "@mikro-orm/core";
+import { Cascade, Entity, ManyToOne, PrimaryKey, Property } from "@mikro-orm/core";
 import { Cart } from "./cart.entity";
 import { Order } from "./order.entity";
 import { Product } from "./product.entity";
@@ -8,7 +8,7 @@ export class CartItem {
   @PrimaryKey({ type: 'uuid'})
   uuid!: string;
 
-  @ManyToOne(() => Cart)
+  @ManyToOne(() => Cart, { cascade: [Cascade.REMOVE] })
   cart!: Cart;
 
   @ManyToOne(() => Product)

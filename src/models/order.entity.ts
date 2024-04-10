@@ -40,9 +40,6 @@ export class Order {
   @Property()
   status!: ORDER_STATUS;
 
-  @Property()
-  total!: number;
-
   constructor(
     paymentType: string,
     paymentAddress: any,
@@ -51,7 +48,6 @@ export class Order {
     deliveryAddress: string,
     comments: string,
     status: ORDER_STATUS,
-    total: number
   ) {
     this.paymentType = paymentType;
     this.paymentAddress = paymentAddress;
@@ -60,6 +56,5 @@ export class Order {
     this.deliveryAddress = deliveryAddress;
     this.comments = comments;
     this.status = status;
-    this.total = total;
   }
 }

@@ -1,20 +1,21 @@
 import { Request, Response } from 'express';
 import * as Joi from 'joi';
-import { getCart as getCartService, deleteCart as deleteCartService, updateCart as updateCartService, createCart as createCartService } from '../services/cart.service';
+import { getCartDto as getCartService, deleteCart as deleteCartService, updateCart as updateCartService, createCart as createCartService } from '../services/cart.service';
 
 export const getCart = async (req: Request, res: Response) => {
     try {
         const userId = req.headers['x-user-id'];
         let cart = await getCartService(userId as string);
 
-
         if (!cart) {
             cart = await createCartService(userId as string);
         }
 
-        const {total, ...cartWithoutTotal} = cart!;
-
-        return res.status(200).json({ data: { cart: cartWithoutTotal, total }, error: null });
+        if (cart) {
+            return res.status(200).json({ data: cart, error: null });
+        } else {
+            return res.status(404).json({ data: null, error: { message: 'Cart not found' } });
+        }
     } catch (error) {
         console.error('Error getting cart:', error);
         return res.status(500).json({
@@ -24,7 +25,7 @@ export const getCart = async (req: Request, res: Response) => {
             }
         });
     }
-  };
+ };
 
 export const deleteCart = async (req: Request, res: Response) => {
     try {
@@ -58,7 +59,7 @@ export const deleteCart = async (req: Request, res: Response) => {
 
 const updateCartSchema = Joi.object({
     productId: Joi.string().required(),
-    count: Joi.number().integer().min(1).required()
+    count: Joi.number().integer().min(0).required()
   });
 
 export const updateCart = async (req: Request, res: Response) => {
@@ -77,8 +78,7 @@ export const updateCart = async (req: Request, res: Response) => {
       const cart = await updateCartService(req.headers['x-user-id'] as string, productId, count);
 
       if (cart) {
-        const {total, ...cartWithoutTotal} = cart!;
-        return res.status(200).json({ data: { cart: cartWithoutTotal, total }, error: null });
+        return res.status(200).json({ data: cart, error: null });
       } else {
         return res.status(500).json({
             data: null,

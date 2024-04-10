@@ -15,7 +15,7 @@ export const authenticateUser = async (req: Request, res: Response, next: NextFu
 
     try {
         const users = await getAllUsers();
-        const user = users.find(user => user.id === userId);
+        const user = users.find(user => user.uuid === userId);
 
         if (!user) {
             return res.status(403).json({

@@ -110,15 +110,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "uuid"
-        },
-        "total": {
-          "name": "total",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
         }
       },
       "name": "cart",
@@ -253,15 +244,6 @@
           "primary": false,
           "nullable": false,
           "mappedType": "string"
-        },
-        "total": {
-          "name": "total",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
         }
       },
       "name": "order",
@@ -324,7 +306,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "uuid"
         },
         "product_uuid": {
@@ -381,7 +363,7 @@
             "uuid"
           ],
           "referencedTableName": "public.cart",
-          "updateRule": "cascade"
+          "deleteRule": "cascade"
         },
         "cart_item_product_uuid_foreign": {
           "constraintName": "cart_item_product_uuid_foreign",

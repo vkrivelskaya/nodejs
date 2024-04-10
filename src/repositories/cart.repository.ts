@@ -3,7 +3,9 @@ import {DI} from '../server';
 
 export const getCart = async (userId: string): Promise<Cart | null> => {
     try {
-        return await DI.cartRepository.findOne({ user: userId });
+        let cart = await DI.cartRepository.findOne({ user: userId });
+
+        return cart;
     } catch (error) {
         console.error('Error fetching cart data:', error);
         return null;
