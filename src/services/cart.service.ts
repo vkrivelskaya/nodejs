@@ -32,9 +32,6 @@ export const deleteCart = async (userId: string): Promise<boolean> => {
       }
 
       cart.items.removeAll();
-
-      console.log(cart);
-
       await update(cart);
 
       return true;
