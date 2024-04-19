@@ -35,7 +35,6 @@ export const register = async (req: Request, res: Response) => {
 
         if (user) {
             const {password, ...userDetails} = user;
-            console.log(password);
             return res.status(201).json({data: userDetails, error: null});
         } else {
             return res.status(500).json({
@@ -67,7 +66,6 @@ export const login = async (req: Request, res: Response) => {
         const { email, password } = req.body;
 
         const user = await getUser(email);
-        console.log(user);
 
         if (!user) {
             return res.status(404).json({

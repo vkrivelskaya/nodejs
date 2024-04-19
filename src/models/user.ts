@@ -24,7 +24,6 @@ UserSchema.pre<UserEntity>('save', async function (next) {
     if (!user.isModified('password')) return next();
     try {
         const hashedPassword = await bcrypt.hash(user.password, 10);
-        console.log(hashedPassword);
         user.password = hashedPassword;
         next();
     } catch (error: any) {

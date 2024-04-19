@@ -27,11 +27,9 @@ export const authenticateUser = async (req: Request, res: Response, next: NextFu
 
     try {
         const user = jwt.verify(token, process.env.TOKEN_KEY!) as UserEntity;
-        console.log(user);
 
         (req as any).user = user;
     } catch (err) {
-        console.log (err);
         return res.status(401).send("Invalid Token");
     }
     return next();
