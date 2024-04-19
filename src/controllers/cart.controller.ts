@@ -4,7 +4,7 @@ import { getCart as getCartService, deleteCart as deleteCartService, updateCart 
 
 export const getCart = async (req: Request, res: Response) => {
     try {
-        const userId = req.headers['x-user-id'];
+        const userId = (req as any).user.user_id;
         let cart = await getCartService(userId as string);
 
 
@@ -24,11 +24,12 @@ export const getCart = async (req: Request, res: Response) => {
             }
         });
     }
-  };
+};
 
 export const deleteCart = async (req: Request, res: Response) => {
     try {
-        const success = await deleteCartService(req.headers['x-user-id'] as string);
+        const userId = (req as any).user.user_id;
+        const success = await deleteCartService(userId);
 
         if (success) {
             return res.status(200).json({
@@ -59,7 +60,7 @@ export const deleteCart = async (req: Request, res: Response) => {
 const updateCartSchema = Joi.object({
     productId: Joi.string().required(),
     count: Joi.number().integer().required()
-  });
+});
 
 export const updateCart = async (req: Request, res: Response) => {
     try {
@@ -74,7 +75,8 @@ export const updateCart = async (req: Request, res: Response) => {
 
 
       const { productId, count } = req.body;
-      const cart = await updateCartService(req.headers['x-user-id'] as string, productId, count);
+      const userId = (req as any).user.user_id;
+      const cart = await updateCartService(userId, productId, count);
 
       if (cart) {
         const {total, ...cartWithoutTotal} = cart!;

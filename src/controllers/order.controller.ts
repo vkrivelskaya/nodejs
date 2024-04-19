@@ -3,7 +3,8 @@ import { createOrder as createOrderService } from '../services/order.service';
 
 export const createOrder = async (req: Request, res: Response) => {
     try {
-        const order = await createOrderService(req.headers['x-user-id'] as string);
+        const userId = (req as any).user.user_id;
+        const order = await createOrderService(userId);
 
         if (order) {
             return res.status(201).json({data: {order, error: null}});

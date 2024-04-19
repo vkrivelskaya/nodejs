@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { getAllUsers } from "../services/users.service";
+import * as jwt from "jsonwebtoken";
+import { UserEntity } from "../models/user";
 
 export const authenticateUser = async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.headers['x-user-id'];
+    const authHeader = req.headers.authorization;
 
-    if (!userId) {
+    if (!authHeader) {
         return res.status(401).json({
             data: null,
             error: {
@@ -13,27 +14,25 @@ export const authenticateUser = async (req: Request, res: Response, next: NextFu
         });
     }
 
-    try {
-        const users = await getAllUsers();
-        const user = users.find(user => user.id === userId);
+    const [tokenType, token] = authHeader.split(' ');
 
-        if (!user) {
-            return res.status(403).json({
-                data: null,
-                error: {
-                    message: 'User is not authorized'
-                }
-            });
-        }
-
-        next();
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        return res.status(500).json({
+    if (tokenType !== 'Bearer') {
+        return res.status(403).json({
             data: null,
             error: {
-                message: 'Failed to fetch users'
+                message: 'User is not authorized'
             }
         });
     }
+
+    try {
+        const user = jwt.verify(token, process.env.TOKEN_KEY!) as UserEntity;
+        console.log(user);
+
+        (req as any).user = user;
+    } catch (err) {
+        console.log (err);
+        return res.status(401).send("Invalid Token");
+    }
+    return next();
 };
