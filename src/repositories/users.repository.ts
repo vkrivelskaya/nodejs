@@ -5,7 +5,7 @@ export const getUsers = async (): Promise<UserEntity[]> => {
     const users = await User.find();
     return users
   } catch (err) {
-    console.error("Error finding users: ", err);
+    logger.error("Error finding users: ", err);
     throw new Error('Failed to fetch users');
   }
 };
@@ -15,7 +15,7 @@ export const getUser = async (email: string): Promise<UserEntity | null> => {
       const user = await User.findOne({ email });
       return user;
   } catch (error) {
-      console.error('Error fetching user', error);
+      logger.error('Error fetching user', error);
       return null;
   }
 };
@@ -26,7 +26,7 @@ export const registerUser = async (user: UserEntity): Promise<boolean> => {
       await newUser.save();
       return true;
   } catch (error) {
-      console.error('Error registering user:', error);
+      logger.error('Error registering user:', error);
       return false;
   }
 };

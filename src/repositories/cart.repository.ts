@@ -1,6 +1,5 @@
 import { CartWithTotal } from '../models/cart';
 import Cart from '../models/cart';
-import { Types } from 'mongoose';
 
 export const getCart = async (userId: string): Promise<CartWithTotal | null> => {
     try {
@@ -20,7 +19,7 @@ export const getCart = async (userId: string): Promise<CartWithTotal | null> => 
         }
         : null;
     } catch (error) {
-        console.error('Error fetching cart data:', error);
+        logger.error('Error fetching cart data:', error);
         return null;
     }
 };
@@ -30,7 +29,7 @@ export const updateCart = async (userId: string, updatedCart: CartWithTotal): Pr
         await Cart.updateOne({ userId }, {...updatedCart}, { upsert: true });
         return true;
     } catch (error) {
-        console.error('Error updating cart:', error);
+        logger.error('Error updating cart:', error);
         return false;
     }
 };
@@ -40,7 +39,7 @@ export const deleteCart = async (userId: string): Promise<boolean> => {
         await Cart.updateOne({ userId }, { items: [] });
         return true;
     } catch (error) {
-        console.error('Error deleting cart:', error);
+        logger.error('Error deleting cart:', error);
         return false;
     }
 };
@@ -52,7 +51,7 @@ export const createCart = async (newCart: CartWithTotal): Promise<boolean> => {
         await cart.save();
         return true;
     } catch (error) {
-        console.error('Error creating cart:', error);
+        logger.error('Error creating cart:', error);
         return false;
     }
 };

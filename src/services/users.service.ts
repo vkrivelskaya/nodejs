@@ -6,7 +6,7 @@ export const getAllUsers = async (): Promise<UserEntity[]> => {
         const users = await getUsers();
         return users;
     } catch (error) {
-        console.error('Error fetching users:', error);
+        logger.error('Error fetching users:', error);
         throw new Error('Failed to fetch users');
     }
 };
@@ -17,7 +17,7 @@ export const getUser = async (email: string): Promise<UserEntity | null> => {
 
         return user;
     } catch (error) {
-        console.error('Error fetching user:', error);
+        logger.error('Error fetching user:', error);
         return null;
     }
 };
@@ -35,7 +35,7 @@ export const registerUser = async (email: string, password: string, role: ROLE):
         await register(newUser);
         return newUser;
     } catch (error) {
-        console.error('Error registering user:', error);
+        logger.error('Error registering user:', error);
         return null;
     }
 };

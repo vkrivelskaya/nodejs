@@ -6,7 +6,7 @@ export const getAllProducts = async (): Promise<ProductEntity[]> => {
     const products = await fetchAllProducts();
     return products;
   } catch (error) {
-    console.error('Error fetching products:', error);
+    logger.error('Error fetching products:', error);
     throw new Error('Failed to fetch products');
   }
 };
@@ -16,7 +16,7 @@ export const getProductById = async (productId: string): Promise<ProductEntity |
       const product = await fetchProductById(productId);
       return product;
     } catch (error) {
-      console.error('Error fetching product:', error);
+      logger.error('Error fetching product:', error);
       throw new Error('Failed to fetch product');
     }
   };

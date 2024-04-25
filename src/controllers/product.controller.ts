@@ -6,7 +6,7 @@ export const getAllProductsController = async (req: Request, res: Response): Pro
       const products = await getAllProducts();
       res.status(200).json({data:products, error: null});
     } catch (error) {
-      console.error('Error fetching all products:', error);
+      logger.error('Error fetching all products:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   };
@@ -27,7 +27,7 @@ export const getAllProductsController = async (req: Request, res: Response): Pro
 
       res.status(200).json({data:product, error: null});
     } catch (error) {
-      console.error('Error fetching product by ID:', error);
+      logger.error('Error fetching product by ID:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   };

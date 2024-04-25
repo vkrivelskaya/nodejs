@@ -45,7 +45,7 @@ export const register = async (req: Request, res: Response) => {
             });
         }
     } catch (error) {
-        console.error('Error register user:', error);
+        logger.error('Error register user:', error);
         return res.status(500).json({
             data: null,
             error: {
@@ -92,7 +92,7 @@ export const login = async (req: Request, res: Response) => {
         }
         res.status(400).send("Invalid Credentials");
     } catch (error) {
-        console.error('Error register user:', error);
+        logger.error('Error register user:', error);
         return res.status(500).json({
             data: null,
             error: {

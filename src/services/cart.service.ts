@@ -10,7 +10,7 @@ export const getCart = async (userId: string): Promise<CartWithTotal | null> => 
         }
         return cart;
     } catch (error) {
-        console.error('Error fetching cart:', error);
+        logger.error('Error fetching cart:', error);
         return null;
     }
 };
@@ -20,7 +20,7 @@ export const deleteCart = async (userId: string): Promise<boolean> => {
         const success = await deleteCartById(userId);
         return success;
     } catch (error) {
-        console.error('Error deleting cart:', error);
+        logger.error('Error deleting cart:', error);
         return false;
     }
 };
@@ -60,7 +60,7 @@ export const updateCart = async (userId: string, productId: string, count: numbe
 
         return currentCart;
     } catch (error) {
-        console.error('Error updating cart:', error);
+        logger.error('Error updating cart:', error);
         return null;
     }
 };
@@ -78,7 +78,7 @@ export const createCart = async (userId: string): Promise<CartWithTotal | null> 
         await create(newCart);
         return newCart;
     } catch (error) {
-        console.error('Error creating cart:', error);
+        logger.error('Error creating cart:', error);
         return null;
     }
 };

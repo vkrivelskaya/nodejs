@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import logger from '../logger';
 import { createOrder as createOrderService } from '../services/order.service';
 
 export const createOrder = async (req: Request, res: Response) => {
@@ -16,7 +17,7 @@ export const createOrder = async (req: Request, res: Response) => {
             });
         }
     } catch (error) {
-        console.error('Error creating order:', error);
+        logger.error('Error creating order:', error);
         return res.status(500).json({
             data: null,
             error: {

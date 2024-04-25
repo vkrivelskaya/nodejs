@@ -7,7 +7,7 @@ export const createOrder = async (order: OrderEntity): Promise<boolean> => {
     await newOrder.save();
     return true;
   } catch (error) {
-    console.error('Error creating order:', error);
+    logger.error('Error creating order:', error);
     return false;
   }
 };

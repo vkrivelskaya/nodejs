@@ -16,7 +16,7 @@ export const getCart = async (req: Request, res: Response) => {
 
         return res.status(200).json({ data: { cart: cartWithoutTotal, total }, error: null });
     } catch (error) {
-        console.error('Error getting cart:', error);
+        logger.error('Error getting cart:', error);
         return res.status(500).json({
             data: null,
             error: {
@@ -47,7 +47,7 @@ export const deleteCart = async (req: Request, res: Response) => {
             });
         }
     } catch (error) {
-        console.error('Error deleting cart:', error);
+        logger.error('Error deleting cart:', error);
         return res.status(500).json({
             data: null,
             error: {
@@ -90,7 +90,7 @@ export const updateCart = async (req: Request, res: Response) => {
         });
       }
     } catch (error) {
-      console.error('Error updating cart:', error);
+      logger.error('Error updating cart:', error);
       return res.status(500).json({
         data: null,
         error: {
