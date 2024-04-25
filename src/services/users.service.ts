@@ -1,3 +1,4 @@
+import logger from "../logger";
 import { ROLE, UserEntity } from "../models/user";
 import { getUsers, getUser as getUserByEmail, registerUser as register } from "../repositories/users.repository";
 

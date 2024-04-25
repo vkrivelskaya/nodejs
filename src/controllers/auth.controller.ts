@@ -3,6 +3,7 @@ import * as Joi from 'joi';
 import { getUser, registerUser } from '../services/users.service';
 import bcrypt from 'bcrypt';
 import * as jwt from "jsonwebtoken";
+import logger from '../logger';
 
 const registerSchema = Joi.object({
     email: Joi.string().email().required(),

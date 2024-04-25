@@ -1,5 +1,6 @@
 import { ProductEntity } from "../models/product";
 import Product from "../models/product";
+import logger from "../logger";
 
 export const getAllProducts = async (): Promise<ProductEntity[]> => {
     try {

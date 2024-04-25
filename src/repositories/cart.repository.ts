@@ -1,5 +1,6 @@
 import { CartWithTotal } from '../models/cart';
 import Cart from '../models/cart';
+import logger from '../logger';
 
 export const getCart = async (userId: string): Promise<CartWithTotal | null> => {
     try {

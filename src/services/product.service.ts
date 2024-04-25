@@ -1,3 +1,4 @@
+import logger from '../logger';
 import { ProductEntity } from '../models/product';
 import { getAllProducts as fetchAllProducts, getProductById as fetchProductById } from '../repositories/product.repository';
 

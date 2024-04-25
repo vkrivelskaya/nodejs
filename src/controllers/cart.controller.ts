@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as Joi from 'joi';
+import logger from '../logger';
 import { getCart as getCartService, deleteCart as deleteCartService, updateCart as updateCartService, createCart as createCartService } from '../services/cart.service';
 
 export const getCart = async (req: Request, res: Response) => {

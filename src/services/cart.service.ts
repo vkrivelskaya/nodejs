@@ -1,3 +1,4 @@
+import logger from "../logger";
 import { CartItemEntity, CartWithTotal } from "../models/cart";
 import {getCart as getCartById, deleteCart as deleteCartById, updateCart as update, createCart as create} from "../repositories/cart.repository"
 import { getProductById } from '../repositories/product.repository';

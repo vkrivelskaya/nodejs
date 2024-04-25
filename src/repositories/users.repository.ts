@@ -1,3 +1,4 @@
+import logger from '../logger';
 import User, { ROLE, UserEntity } from '../models/user';
 
 export const getUsers = async (): Promise<UserEntity[]> => {

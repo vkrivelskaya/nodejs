@@ -3,6 +3,7 @@ import { createOrder as createOrderInRepository } from '../repositories/order.re
 import { deleteCart } from '../repositories/cart.repository';
 import { CartWithTotal } from '../models/cart';
 import { getCart } from './cart.service';
+import logger from '../logger';
 
 export const createOrder = async (userId: string): Promise<OrderEntity | null> => {
     try {
