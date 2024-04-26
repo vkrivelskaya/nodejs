@@ -6,12 +6,15 @@ import { authRouter } from './routers/auth.router';
 import dotenv from "dotenv";
 import { healthRouter } from './routers/health.router';
 import logger from './logger';
+import { requestLogger } from './middleware/request-info-logger.middleware';
 
 dotenv.config();
 
 const PORT = process.env.PORT || 8000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://root:nodegmp@localhost:27017/nodeapp';
 const app = express();
+
+app.use(requestLogger);
 
 mongoose.connect(MONGODB_URI)
   .then(() => {
