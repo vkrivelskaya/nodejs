@@ -11,7 +11,7 @@ import { requestLogger } from './middleware/request-info-logger.middleware';
 dotenv.config();
 
 const PORT = process.env.PORT || 8000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://root:nodegmp@localhost:27017/nodeapp';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://root:nodegmp@127.0.0.1:27017/nodeapp';
 const app = express();
 
 app.use(requestLogger);
