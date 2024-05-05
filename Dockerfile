@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:19
+FROM node:21-alpine
 
 # Set the working directory
 WORKDIR /src
@@ -11,10 +11,10 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application code to the container
-COPY . .
+COPY ./dist ./dist
 
 # Expose port 8000
 EXPOSE 8000
 
 # Start the app
-CMD [ "npm", "start" ]
+CMD [ "npm",  "start" ]

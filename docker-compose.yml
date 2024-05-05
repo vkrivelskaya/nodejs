@@ -9,6 +9,17 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=nodegmp
       - MONGO_INITDB_DATABASE=nodeapp
     ports:
-      - '27017:27017'
+      - '27017'
     volumes:
       - ./init-mongo:/docker-entrypoint-initdb.d
+  application:
+    build: .
+    container_name: "node-app"
+    restart: "always"
+    depends_on:
+      - mongo
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: ./.env
+        required: true # default
