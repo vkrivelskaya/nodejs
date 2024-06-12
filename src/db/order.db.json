@@ -1,0 +1,123 @@
+[
+  {
+    "id": "dffd6fa8-be6b-47f6-acff-455612620ac2",
+    "userId": "0fe36d16-49bc-4aab-a227-f84df899a6cb",
+    "cartId": "",
+    "items": [
+      {
+        "product": {
+          "id": "51422fcd-0366-4186-ad5b-c23059b6f64f",
+          "title": "Book",
+          "description": "A very interesting book",
+          "price": 100
+        },
+        "count": 2
+      }
+    ],
+    "payment": {
+      "type": "paypal",
+      "address": "undefined",
+      "creditCard": "undefined"
+    },
+    "delivery": {
+      "type": "post",
+      "address": "undefined"
+    },
+    "comments": "",
+    "status": "created",
+    "total": 2
+  },
+  {
+    "id": "978d6d1b-7153-4ed8-af31-7c4efe22d17a",
+    "userId": "0fe36d16-49bc-4aab-a227-f84df899a6cb",
+    "cartId": "cbe129cb-6b80-4b75-9bf9-a0f197b93c72",
+    "items": [
+      {
+        "product": {
+          "id": "915b2f40-9fd9-47f2-9b51-628f3dc69aac",
+          "title": "Game",
+          "description": "A very interesting game",
+          "price": 200
+        },
+        "count": 5
+      },
+      {
+        "product": {
+          "id": "51422fcd-0366-4186-ad5b-c23059b6f64f",
+          "title": "Book",
+          "description": "A very interesting book",
+          "price": 100
+        },
+        "count": 5
+      }
+    ],
+    "payment": {
+      "type": "paypal",
+      "address": "London",
+      "creditCard": "1234-1234-1234-1234"
+    },
+    "delivery": {
+      "type": "post",
+      "address": "London"
+    },
+    "comments": "",
+    "status": "created",
+    "total": 1500
+  },
+  {
+    "id": "5454422d-d4d2-412c-a80a-aad0b015d291",
+    "userId": "0fe36d16-49bc-4aab-a227-f84df899a6cb",
+    "cartId": "4adb1fa9-6c9c-4de3-b02e-2bd55c98746a",
+    "items": [
+      {
+        "product": {
+          "id": "915b2f40-9fd9-47f2-9b51-628f3dc69aac",
+          "title": "Game",
+          "description": "A very interesting game",
+          "price": 200
+        },
+        "count": 6
+      }
+    ],
+    "payment": {
+      "type": "paypal",
+      "address": "London",
+      "creditCard": "1234-1234-1234-1234"
+    },
+    "delivery": {
+      "type": "post",
+      "address": "London"
+    },
+    "comments": "",
+    "status": "created",
+    "total": 1200
+  },
+  {
+    "id": "75be9df5-3796-4af9-845e-d458449b4bf9",
+    "userId": "0fe36d16-49bc-4aab-a227-f84df899a6cb",
+    "cartId": "4adb1fa9-6c9c-4de3-b02e-2bd55c98746a",
+    "items": [
+      {
+        "product": {
+          "id": "915b2f40-9fd9-47f2-9b51-628f3dc69aac",
+          "title": "Game",
+          "description": "A very interesting game",
+          "price": 200
+        },
+        "count": 2
+      }
+    ],
+    "payment": {
+      "type": "paypal",
+      "address": "London",
+      "creditCard": "1234-1234-1234-1234"
+    },
+    "delivery": {
+      "type": "post",
+      "address": "London"
+    },
+    "comments": "",
+    "status": "created",
+    "total": 400
+  }
+]
